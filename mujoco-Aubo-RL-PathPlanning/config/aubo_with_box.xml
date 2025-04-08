@@ -1,0 +1,484 @@
+<mujoco model="aubo_iS35">
+  <option iterations="50" timestep="0.001" solver="PGS" gravity="0 0 -9.81" />
+
+  <compiler angle="radian" meshdir="../assets/meshes/collision_aubo" eulerseq="zyx" autolimits="true" />
+
+  <default>
+    <joint limited="true" damping="0.01" armature="0.01" frictionloss="0.01" />
+    <geom condim="4" contype="1" conaffinity="15" friction="0.9 0.2 0.2" solref="0.001 2" />
+    <motor ctrllimited="true" />
+    <equality solref="0.001 2" />
+    <default class="visualgeom">
+      <geom material="visualgeom" condim="1" contype="0" conaffinity="0" />
+    </default>
+  </default>
+
+  <asset>
+    <mesh name="link0" file="link0.STL" />
+    <mesh name="link1" file="link1.STL" />
+    <mesh name="link2" file="link2.STL" />
+    <mesh name="link3" file="link3.STL" />
+    <mesh name="link4" file="link4.STL" />
+    <mesh name="link5" file="link5.STL" />
+    <mesh name="link6" file="link6.STL" />
+    <mesh name="hand" file="hand.stl" />
+    <texture name="texplane" type="2d" builtin="checker" rgb1=".0 .0 .0" rgb2=".8 .8 .8" width="100" height="100" />
+    <material name="matplane" reflectance="0." texture="texplane" texrepeat="1 1" texuniform="true" />
+    <material name="visualgeom" rgba="0.5 0.9 0.2 1" />
+  </asset>
+
+  <worldbody>
+    <light directional="true" diffuse="0.4 0.4 0.4" specular="0.1 0.1 0.1" pos="0 0 5.0" dir="0 0 -1" castshadow="false" />
+    <light directional="true" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2" pos="0 0 4" dir="0 0 -1" />
+    <geom name="ground" type="plane" pos="0 0 0" size="100 100 0.001" quat="1 0 0 0" material="matplane" condim="3" conaffinity="15" />
+    <camera name="fixed" pos="0 -3.0 0.6441694317532252" xyaxes="1 0 0 0 0 1" />
+    <camera name="track" mode="trackcom" pos="0 -3.0 0.6441694317532252" xyaxes="1 0 0 0 0 1" />
+    <body name="root" pos="0 0 0.99" quat="0 0 0 1">
+      <!-- <freejoint name="root" /> -->
+      <site name="imu" size="0.01" pos="0 0 0" />
+      <geom type="mesh" rgba="1 1 1 1" mesh="link0" contype="1" conaffinity="0" density="0" group="1" class="visualgeom" />
+      <geom type="mesh" rgba="1 1 1 1" mesh="link0" />
+      <body name="shoulder_Link" pos="0 0 0.3776" quat="0 0 0 1">
+        <inertial pos="1.1e-05 -0.034353 -0.124233" quat="0.971073 0.238757 -0.001259 0.00322201" mass="45.3507" diaginertia="0.76196 0.715604 0.393995" />
+        <joint name="shoulder_joint" pos="0 0 0" axis="0 0 1" range="-3.05433 3.05433" actuatorfrcrange="-1500 1500" />
+        <geom type="mesh" rgba="1 1 1 1" mesh="link1" contype="1" conaffinity="0" density="0" group="1" class="visualgeom" />
+        <geom type="mesh" rgba="1 1 1 1" mesh="link1" />
+        <body name="upperArm_Link" pos="0 0.2455 0" quat="0.5 -0.5 -0.5 -0.5">
+          <inertial pos="0.25028 -1.2e-05 -0.018961" quat="0.520703 0.478443 0.478895 0.520212" mass="73.5652" diaginertia="14.5124 14.0868 0.964712" />
+          <joint name="upperArm_joint" pos="0 0 0" axis="0 0 1" range="-3.05433 3.05433" actuatorfrcrange="-1500 1500" />
+          <geom type="mesh" rgba="1 1 1 1" mesh="link2" contype="1" conaffinity="0" density="0" group="1" class="visualgeom" />
+          <geom type="mesh" rgba="1 1 1 1" mesh="link2" />
+          <body name="foreArm_Link" pos="1 0 0" quat="0 -1 0 0">
+            <inertial pos="0.444506 -1e-05 0.145985" quat="0.497529 0.502451 0.50188 0.498121" mass="14.842" diaginertia="2.58568 2.58188 0.0715948" />
+            <joint name="foreArm_joint" pos="0 0 0" axis="0 0 1" range="-3.05433 3.05433" actuatorfrcrange="-557 557" />
+            <geom type="mesh" rgba="1 1 1 1" mesh="link3" contype="1" conaffinity="0" density="0" group="1" class="visualgeom" />
+            <geom type="mesh" rgba="1 1 1 1" mesh="link3" />
+            <body name="wrist1_Link" pos="0.9595 0 0" quat="0 0.707107 0.707107 0">
+              <inertial pos="4e-06 0.019642 -0.001959" quat="0.680427 0.732452 0.01703 -0.0155704" mass="4.3914" diaginertia="0.0096041 0.00955922 0.00728268" />
+              <joint name="wrist1_joint" pos="0 0 0" axis="0 0 1" range="-3.05433 3.05433" actuatorfrcrange="-133 133" />
+              <geom type="mesh" rgba="1 1 1 1" mesh="link4" contype="1" conaffinity="0" density="0" group="1" class="visualgeom" />
+              <geom type="mesh" rgba="1 1 1 1" mesh="link4" />
+              <body name="wrist2_Link" pos="0 0.1405 0" quat="0.707107 -0.707107 0 0">
+                <inertial pos="-4e-06 -0.019642 -0.001959" quat="0.732452 0.680427 -0.0155704 0.01703" mass="4.3914" diaginertia="0.0096041 0.00955922 0.00728268" />
+                <joint name="wrist2_joint" pos="0 0 0" axis="0 0 1" range="-3.05433 3.05433" actuatorfrcrange="-133 133" />
+                <geom type="mesh" rgba="1 1 1 1" mesh="link5" contype="1" conaffinity="0" density="0" group="1" class="visualgeom" />
+                <geom type="mesh" rgba="1 1 1 1" mesh="link5" />
+                <body name="wrist3_Link" pos="0 -0.1295 0" quat="0.707107 0.707107 0 0">
+                  <inertial pos="-5.40247e-06 9.31754e-06 0.317101" quat="0.707246 -1.2113e-05 3.07088e-06 0.706968" mass="12.4692" diaginertia="0.306181 0.302139 0.135097" />
+                  <joint name="wrist3_joint" pos="0 0 0" axis="0 0 1" range="-3.05433 3.05433" actuatorfrcrange="-133 133" />
+                  <geom type="mesh" rgba="1 1 1 1" mesh="link6" contype="1" conaffinity="0" density="0" group="1" class="visualgeom" />
+                  <geom type="mesh" rgba="1 1 1 1" mesh="link6" />
+                  <!-- 新增hand的独立body -->
+                  <!-- <body name="hand" pos="0 0 0" quat="0 0 0 1">
+                      <geom type="mesh" rgba="1 1 1 1" mesh="hand" contype="1" conaffinity="0" density="0" group="1" class="visualgeom" />
+                  </body> -->
+
+                  <geom type="mesh" rgba="1 1 1 1" mesh="hand" contype="1" conaffinity="0" density="0" group="1" class="visualgeom" />
+                  <geom type="mesh" rgba="1 1 1 1" mesh="hand" />
+                  
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+
+    <!-- 添加目标点标记 -->
+    <site name="target_site" pos="0 0 0" size="0.05" rgba="1 0 0 0.5" type="sphere"/>
+
+    <!-- 来自第二个文件的障碍物 -->
+    <!-- <body name="顶部墙面" pos="0.0 0.5 2.6">
+      <geom type="box" size="1.2 2.0 0.01" rgba="0.5 0.5 0.5 0.2" euler="0 0 0"/>
+    </body> -->
+    <!-- <body name="底部墙面" pos="0.0 0.5 0">
+      <geom type="box"
+            size="1.2 2.0 0.01"
+            rgba="0.5 0.5 0.5 0.2"
+            euler="0 3.141592653589793 0"/>
+    </body> -->
+    <!-- <body name="左侧墙面" pos="-1.2 0.5 1.3">
+      <geom type="box"
+            size="1.3 2.0 0.01"
+            rgba="0.5 0.5 0.5 0.2"
+            euler="0 1.5707963267948966 0"/>
+    </body>
+    <body name="右侧墙面" pos="1.2 0.5 1.3">
+      <geom type="box"
+            size="1.3 2.0 0.01"
+            rgba="0.5 0.5 0.5 0.2"
+            euler="0 -1.5707963267948966 0"/> -->
+    <!-- </body> -->
+    <!-- <body name="后墙" pos="0.0 -1.88 1.3">
+      <geom type="box"
+            size="1.2 1.3 0.01"
+            rgba="0.5 0.5 0.5 0.2"
+            euler="1.5707963267948966 0 0"/>
+    </body> -->
+    <!-- <body name="另一个机械臂" pos="-0.3 -0.98 1.25"> -->
+      <!-- <geom type="box"
+            size="0.25 1.25 0.25"
+            rgba="0.5 1 0.5 0.3"
+            euler="-1.5707963267948966 0 0"/> -->
+            <!-- <geom type="box"
+            size="0.25 1.25 0.25"
+            rgba="0.5 1 0.5 0.3"
+            euler="0 0 1.5707963267948966"/>
+    </body> -->
+    <body name="基座" pos="0.0 0 0.495">
+      <geom type="box"
+            size="0.25 0.25 0.495"
+            rgba="1 0.0 0.0 0.5"
+            euler="0 3.141592653589793 0"/>
+    </body>
+    <!-- <body name="升降机" pos="0 1.034785 0.491695">
+      <geom type="box"
+            size="1.1032 0.235215 0.491695"
+            rgba="0.5 0.5 1 0.5"
+            euler="0 3.141592653589793 0"/>
+    </body>
+    <body name="传送带" pos="0.5265 -0.317825 0.520095">
+      <geom type="box"
+            size="0.2874 1.017395 0.520095"
+            rgba="0.5 1 1 0.5"
+            euler="0 3.141592653589793 0"/>
+    </body> -->
+    <!-- <body name="底盘" pos="0.0 0.020000000000000018 0.25"> -->
+      <!-- <geom type="box"
+            size="1.25 0.9 0.25"
+            rgba="1 0.5 0 0.5"
+            euler="0 3.141592653589793 1.5707963267948966"/> -->
+            <!-- <geom type="box"
+            size="1.25 0.9 0.25"
+            rgba="1 0.5 0 0.5"
+            euler="1.5707963267948966 0 0"/>
+    </body> -->
+    <!-- <body name="摄像头支架" pos="0.859 -1.189 1.05">
+      <geom type="box"
+            size="0.04 0.04 1.05"
+            rgba="1 0.5 1 0.5"
+            euler="0 3.141592653589793 0"/>
+    </body> -->
+
+    <!-- 把site放到可移动的body里 -->
+    <!-- 1.018, 1.463, 2.440 -->
+  <!-- <body name="movable_body" pos="1.018 1.263 2.440">
+    <freejoint name="free_joint"/>
+    <inertial pos="0 0 0" quat="0 0 0 1" mass="0.001" diaginertia="0.0001 0.0001 0.0001"/>
+    <site name="target_site" pos="0 0 0" size="0.1" rgba="1 0 0 0.8" type="sphere"/>
+    <site name="approach_vector" pos="0 0 0" size="0.01 0.01 0.2" rgba="0 1 0 0.5" type="cylinder"/>
+  </body> -->
+
+  <body name="box_0_0" pos="1.018 1.618 2.440">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5" 
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_0_1" pos="0.509 1.618 2.440">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_0_2" pos="-0.000 1.618 2.440">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_0_3" pos="-0.509 1.618 2.440">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_0_4" pos="-1.018 1.618 2.440">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_1_0" pos="1.018 1.618 2.114">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_1_1" pos="0.509 1.618 2.114">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_1_2" pos="-0.000 1.618 2.114">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_1_3" pos="-0.509 1.618 2.114">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_1_4" pos="-1.018 1.618 2.114">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_2_0" pos="1.018 1.618 1.787">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_2_1" pos="0.509 1.618 1.787">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_2_2" pos="-0.000 1.618 1.787">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_2_3" pos="-0.509 1.618 1.787">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_2_4" pos="-1.018 1.618 1.787">
+    <geom type="box" size="0.1775 0.155 0.2575" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.707107 0.707107 0.000000 0.000000"/>
+  </body>
+
+  <body name="box_3_0" pos="1.018 1.618 1.461">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_3_1" pos="0.509 1.618 1.461">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_3_2" pos="-0.000 1.618 1.461">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_3_3" pos="-0.509 1.618 1.461">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_3_4" pos="-1.018 1.618 1.461">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_4_0" pos="1.018 1.618 1.134">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_4_1" pos="0.509 1.618 1.134">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_4_2" pos="-0.000 1.618 1.134">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_4_3" pos="-0.509 1.618 1.134">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_4_4" pos="-1.018 1.618 1.134">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_5_0" pos="1.018 1.618 0.808">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_5_1" pos="0.509 1.618 0.808">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_5_2" pos="-0.000 1.618 0.808">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_5_3" pos="-0.509 1.618 0.808">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_5_4" pos="-1.018 1.618 0.808">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_6_0" pos="1.018 1.618 0.481">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_6_1" pos="0.509 1.618 0.481">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_6_2" pos="-0.000 1.618 0.481">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_6_3" pos="-0.509 1.618 0.481">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_6_4" pos="-1.018 1.618 0.481">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_7_0" pos="1.018 1.618 0.155">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_7_1" pos="0.509 1.618 0.155">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_7_2" pos="-0.000 1.618 0.155">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_7_3" pos="-0.509 1.618 0.155">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+  </body>
+
+  <body name="box_7_4" pos="-1.018 1.618 0.155">
+    <geom type="box" size="0.1775 0.2575 0.155" 
+          rgba="0.7 0.5 0.3 0.5"
+          friction="0.8 0.1 0.1"
+          quat="0.000000 0.000000 1.000000 0.000000"/>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor name="shoulder_joint" joint="shoulder_joint" ctrllimited="true" ctrlrange="-1500 1500" gear="1" />
+    <motor name="upperArm_joint" joint="upperArm_joint" ctrllimited="true" ctrlrange="-1500 1500" gear="1" />
+    <motor name="foreArm_joint" joint="foreArm_joint" ctrllimited="true" ctrlrange="-557 557" gear="1" />
+    <motor name="wrist1_joint" joint="wrist1_joint" ctrllimited="true" ctrlrange="-133 133" gear="1" />
+    <motor name="wrist2_joint" joint="wrist2_joint" ctrllimited="true" ctrlrange="-133 133" gear="1" />
+    <motor name="wrist3_joint" joint="wrist3_joint" ctrllimited="true" ctrlrange="-133 133" gear="1" />
+  </actuator>
+
+  <sensor>
+    <actuatorpos name="shoulder_joint_p" actuator="shoulder_joint" />
+    <actuatorvel name="shoulder_joint_v" actuator="shoulder_joint" />
+    <actuatorfrc name="shoulder_joint_f" actuator="shoulder_joint" noise="0.001" />
+    <actuatorpos name="upperArm_joint_p" actuator="upperArm_joint" />
+    <actuatorvel name="upperArm_joint_v" actuator="upperArm_joint" />
+    <actuatorfrc name="upperArm_joint_f" actuator="upperArm_joint" noise="0.001" />
+    <actuatorpos name="foreArm_joint_p" actuator="foreArm_joint" />
+    <actuatorvel name="foreArm_joint_v" actuator="foreArm_joint" />
+    <actuatorfrc name="foreArm_joint_f" actuator="foreArm_joint" noise="0.001" />
+    <actuatorpos name="wrist1_joint_p" actuator="wrist1_joint" />
+    <actuatorvel name="wrist1_joint_v" actuator="wrist1_joint" />
+    <actuatorfrc name="wrist1_joint_f" actuator="wrist1_joint" noise="0.001" />
+    <actuatorpos name="wrist2_joint_p" actuator="wrist2_joint" />
+    <actuatorvel name="wrist2_joint_v" actuator="wrist2_joint" />
+    <actuatorfrc name="wrist2_joint_f" actuator="wrist2_joint" noise="0.001" />
+    <actuatorpos name="wrist3_joint_p" actuator="wrist3_joint" />
+    <actuatorvel name="wrist3_joint_v" actuator="wrist3_joint" />
+    <actuatorfrc name="wrist3_joint_f" actuator="wrist3_joint" noise="0.001" />
+    <framequat name="orientation" objtype="site" noise="0.001" objname="imu" />
+    <gyro name="angular-velocity" site="imu" noise="0.005" cutoff="34.9" />
+  </sensor>
+</mujoco>
