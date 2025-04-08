@@ -66,29 +66,25 @@ class ArmEnv(gym.Env):
         
         self.target_site_id = self.model.site("target_site").id
 
-    def _init_boxes(self):
+    # def _init_boxes(self):
         """初始化所有箱子的位置信息"""
-        for i in range(8):  # 8排
+        # for i in range(8):  # 8排
+        #     for j in range(5):  # 5列
+        #         x = 1.018 - j * 0.509  # 从右到左
+        #         y = 1  # 固定y坐标
+        #         if i < 3:  # 前3排
+        #             z = 2.440 - i * 0.327  # 从上到下
+        #         else:  # 后5排
+        #             z = 1.461 - (i-3) * 0.327
+        #         self.boxes.append([x, y, z])
+    def _init_boxes(self):
+        """初始化前三层箱子的位置信息"""
+        for i in range(3):  # 仅前三排
             for j in range(5):  # 5列
                 x = 1.018 - j * 0.509  # 从右到左
-
-                if i < 3:  # 前3排
-                    y = 0.9  # 固定y坐标
-                    z = 2.440 - i * 0.327  # 从上到下
-                else:  # 后5排
-                    # y = 1.618
-                    y = 0.9
-                    # z = 1.461 - (i-3) * 0.327 + 0.6 #0.6是连杆的偏置
-                    z = 1.461 - (i-3) * 0.327 
+                y = 0.8  # 固定y坐标
+                z = 2.440 - i * 0.327  # 从上到下
                 self.boxes.append([x, y, z])
-    # def _init_boxes(self):
-    #     """初始化前三层箱子的位置信息"""
-    #     for i in range(3):  # 仅前三排
-    #         for j in range(5):  # 5列
-    #             x = 1.018 - j * 0.509  # 从右到左
-    #             y = 0.8  # 固定y坐标
-    #             z = 2.440 - i * 0.327  # 从上到下
-    #             self.boxes.append([x, y, z])
 
     def _get_endeffector_pos(self) -> np.ndarray:
         """获取末端执行器位置"""
@@ -185,19 +181,14 @@ class ArmEnv(gym.Env):
 
     def _apply_ros_control(self, target_pos):
         # print("使用ROS控制器")
-        # 计算当前姿态（这里简化为固定姿态）
-        roll, pitch, yaw = math.pi/2, 0, 0
-        # if target_pos[2] > 1.5:
-        #     roll, pitch, yaw = math.pi/2, 0, 0
-        # else:
-        #     roll, pitch, yaw = math.pi, 0, math.pi
-        
         target_pos[0] = -target_pos[0]
         target_pos[1] = -target_pos[1]
         target_pos[2] = target_pos[2] - 0.99
         """使用逆运动学计算关节角度"""
 
-
+        # 计算当前姿态（这里简化为固定姿态）
+        roll, pitch, yaw = math.pi/2, 0, 0
+        
         # print(f"目标位置: {target_pos}")
         # print(f"目标姿态: {roll}, {pitch}, {yaw}")
         # 计算逆运动学
@@ -322,8 +313,8 @@ def main():
     args = parser.parse_args()
 
     # 创建环境
-    # env = ArmEnv(render_mode="human")
-    env = ArmEnv(render_mode=None)
+    env = ArmEnv(render_mode="human")
+    # env = ArmEnv(render_mode=None)
     vec_env = DummyVecEnv([lambda: env])
 
     if args.train:
@@ -386,7 +377,7 @@ def main():
                 obs, reward, terminated, truncated, _ = test_env.step(action)
                 total_reward += reward
                 test_env.render()
-                time.sleep(0.02)
+                time.sleep(0.2)
             
             print(f"回合 {episode+1}: 总奖励 = {total_reward:.2f}")
 
