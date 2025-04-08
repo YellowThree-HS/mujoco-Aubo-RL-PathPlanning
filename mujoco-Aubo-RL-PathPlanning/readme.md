@@ -131,7 +131,8 @@ if distance < self.pos_threshold:  # 成功奖励
             print(f"回合 {episode+1}: 总奖励 = {total_reward:.2f}")
 ```
 
-## 附录
-代码开源在
+## 视频
+[录屏 2025年04月08日 15时42分29秒.webm](https://github.com/user-attachments/assets/82a879b0-eeaf-41be-afcd-77c0fa0b7141)
+
 
 > 注：完整代码涉及商业模型不便开源，核心逻辑已给出实现思路
